@@ -7,16 +7,16 @@ in
     name = "growing-a-datepicker";
     src = ./.;
     installPhase = ''
-    mkdir -p $out;
+      mkdir -p $out;
 
-    ln -sv ${blog}/drafts/ $out/drafts
-    ln -sv ${blog}/posts/ $out/posts
+      ln -sv ${blog}/drafts/ $out/drafts
+      ln -sv ${blog}/posts/ $out/posts
 
-    mkdir -p $out/js/reflex
-    ln -sv ${part2}/js/reflex/growing-a-datepicker $out/js/reflex/growing-a-datepicker
+      mkdir -p $out/js/reflex
+      ln -sv ${part2}/js/reflex/growing-a-datepicker $out/js/reflex/growing-a-datepicker
 
-    mkdir -p $out/css/reflex
-    ln -sv ${part2}/css/reflex/growing-a-datepicker $out/css/reflex/growing-a-datepicker
+      mkdir -p $out/css/reflex
+      ln -sv ${part2}/css/reflex/growing-a-datepicker $out/css/reflex/growing-a-datepicker
     '';
     phases = ["installPhase"];
   }

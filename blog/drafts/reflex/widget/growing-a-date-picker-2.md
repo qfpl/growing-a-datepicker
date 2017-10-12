@@ -3,11 +3,17 @@ title: Growing a Date Picker in Reflex - Part 2
 date: 2017-10-11
 authors: schalmers
 project: reflex
+extra-css: /css/reflex/growing-a-datepicker/reflex-dom-datepicker.css
+extra-js: /js/reflex/growing-a-datepicker/datepicker-embed.min.js
 ---
 
-Continuing on from the [previous post]() about our shiny new date picker, there has been a lot going on and the various pieces are really starting to come together. In this post we discuss a large scale (re?)factoring of the various components into self-contained pieces.
+Continuing on from the [previous post](posts/reflex/widget/growing-a-datepicker-1) about our shiny new date picker, there has been a lot going on and the various pieces are really starting to come together. In this post we discuss a large scale (re?)factoring of the various components into self-contained pieces.
 
 This post is more of a 'developer diary' style and may not be as straight forward as post number one.
+
+#### The story so far
+
+<div id="datepicker-simple"></div>
 
 #### Refactoring
 

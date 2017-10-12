@@ -62,5 +62,7 @@ fullSimpleDatepickerWidget = do
   RD.el "h3" $
     RD.text "Date Value: " >> RD.dynText dDate
 
-widg :: JSM ()
-widg = attachId_ "fred" fullSimpleDatepickerWidget
+widg
+  :: JSM ()
+widg =
+  attachId_ "datepicker-simple" fullSimpleDatepickerWidget
