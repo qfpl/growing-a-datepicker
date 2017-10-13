@@ -9,8 +9,8 @@ in
     installPhase = ''
       mkdir -p $out;
 
-      ln -sv ${blog}/drafts/ $out/drafts
-      ln -sv ${blog}/posts/ $out/posts
+      ln -sv ${blog}/drafts $out/drafts
+      ln -sv ${blog}/posts $out/posts
 
       mkdir -p $out/js/reflex
       ln -sv ${part2}/js/reflex/growing-a-datepicker $out/js/reflex/growing-a-datepicker

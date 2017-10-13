@@ -3,7 +3,7 @@ title: Growing a Date Picker in Reflex - Part 2
 date: 2017-10-11
 authors: schalmers
 project: reflex
-extra-css: /css/reflex/growing-a-datepicker/reflex-dom-datepicker.css
+extra-css: /css/reflex/growing-a-datepicker/reflex-dom-datepicker.css, /css/reflex/growing-a-datepicker/part2.css
 extra-js: /js/reflex/growing-a-datepicker/datepicker-embed.min.js
 ---
 
@@ -14,6 +14,9 @@ This post is more of a 'developer diary' style and may not be as straight forwar
 #### The story so far
 
 <div id="datepicker-simple"></div>
+<small>
+As it turns out, I'm worse with CSS than I thought. The research continues...
+</small>
 
 #### Refactoring
 
@@ -130,5 +133,3 @@ Changing it back to use ``current d <@ e`` made everything happy once again. ``t
 ## Just keep swimming...
 
 The date picker is progressing well and it's nice to see people interested in it so I hope I can make something useful. Next up is more dynamic and flexible styling capabilities for the list of days. As well is cleaning up the code and providing more useful comments and documentation on how one might actually use it.
-
-As well as embedding a copy of the date picker in this post if I can work it out...

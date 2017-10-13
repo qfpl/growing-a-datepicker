@@ -1,0 +1,21 @@
+.datepicker-widget {
+  min-height: 15em;
+}
+.datepicker-text-input {
+  width: 10em;
+  text-align: center;
+}
+
+.day-wrap {
+  margin: 0.1em;
+  width: 13.28%;
+}
+/* Small devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+  .month-button-wrap {
+    margin-bottom: 0;
+  }
+  .month-button-wrap>button, .datepicker-text-input {
+    width: 100%;
+  }
+}

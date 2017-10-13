@@ -27,6 +27,7 @@ let
       cp $out/bin/datepicker-embed.jsexe/all.js $out/js/reflex/growing-a-datepicker/datepicker-embed.js
 
       mkdir -p $out/css/reflex/growing-a-datepicker
+      cp -r ./css/* $out/css/
       cp ${haskellPackages.reflex-dom-datepicker}/css/* $out/css/reflex/growing-a-datepicker/
 
       cd $out/bin/datepicker-embed.jsexe
