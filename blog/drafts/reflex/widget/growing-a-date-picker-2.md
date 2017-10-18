@@ -9,16 +9,16 @@ extra-js: /js/reflex/growing-a-datepicker/datepicker-embed.min.js
 
 Continuing on from the [previous post](posts/reflex/widget/growing-a-datepicker-1) about our shiny new date picker, there has been a lot going on and the various pieces are really starting to come together. In this post we discuss a large scale refactoring of the larger moving parts into self-contained pieces.
 
-#### The story so far
+#### Behold, a datepicker
+
+The widget on the left is the simple date picker implementation as it currently stands. The CSS that is provided in the library itself is far simpler. But I didn't think people would appreciate having to include Twitter Bootstrap styling as a default.
 
 <div id="datepicker-simple"></div>
-<small>
-As it turns out, I'm worse with CSS than I thought. The research continues...
-</small>
+<small>As it turns out, I'm worse with CSS than I thought.</small>
 
 #### Refactoring
 
-Spurred on by [this comment](https://www.reddit.com/r/haskell/comments/74mnnk/growing_a_date_picker_in_reflex_part_1/do3g6nx/), I started to factor out the larger pieces of the date picker into their own functions, and eventually their own modules. Initially this was to see if I could make the 'day' display widget a standalone item. This soon snowballed however.
+Spurred on by [this comment](https://www.reddit.com/r/haskell/comments/74mnnk/growing_a_date_picker_in_reflex_part_1/do3g6nx/), I started to factor out the larger pieces of the date picker into their own functions, and eventually their own modules. Initially this was to see if I could make the list of days a standalone item. This soon snowballed...
 
 #### Modules!
 
@@ -63,7 +63,13 @@ mkDatePickerCore
 mkDatePickerCore = ...
 ```
 
-The ability to style the day that has been selected is a required feature. There quite a few ways of handling this requirement and I went through quite a few iterations before settling on this particular one. Even now I'm sure there are better ways to do this, but this will suffice for now.
+Each of these components can be used as a standalone piece. So if you have an existing way of specifying a list of ``Day`` values, you can use only the ``DaySelect`` component to handle the list and click ``Event``. If you have you're own display built, you can use the ``Core`` component to handle the 'state' and updates of the ``Day`` value. This provides a lot of flexibility, both in display since none of the components are tied together, but also in raw functionality with respect to how you handle the ``Day`` value.
+
+Naturally everyone will have their own requirements, but I'm definitely interested to see the feedback regarding this sort of design. There is a simple date picker function included that just packages everything up into a single widget. So you don't always have to handle all of the wiring yourself.
+
+#### Paint and glitter
+
+The ability to style the day that has been selected is a required feature. There quite a few ways of handling this requirement and I went through quite a few iterations before settling on a design. Even now I'm sure there are better ways to do this, but this will suffice for now.
 
 Initial thoughts involved changing the attributes ``Dynamic`` from:
 ```haskell
@@ -150,7 +156,7 @@ The functions it builds on are in the [reflex-dom-datepicker](https://github.com
 
 There is also the need to be able to select a range of days. Either by clicking start and end days, or clicking and dragging. That's a bit more advanced and I'm not sure how to approach that one yet.
 
-### Styling additions
+#### Styling additions
 
 In order to make some of the styling possible for the various component layouts, there is a need to wrap groups of elements in a ``div`` or similar parent element. Whilst "make it work" was the priority, this was handled by hard-coding in the wrapping element. But that isn't a viable solution for end users as their needs will always be a bit different. Easy to assume they'll be better with CSS too, so best not bind them to my attempts at a flexible layout.
 
@@ -197,11 +203,8 @@ This is something that is just used in this project, and it's trivial enough tha
 
 There are type level functions that would make that even nicer but that is beyond the scope of this post.
 
-#### Pretty!
 
-There is now some CSS included with the date picker and the layout of the controls and the list of days in the month now looks like something worthwhile. It's a work in progress and there many yaks lining up for this particular barber. So it most cases you will be better off writing your own styles to apply to the date picker, until I come up with something more robust.
-
-### Oh no, a bug!
+#### Oh no, a bug!
 
 Overall the process of breaking out the different pieces into their various modules was quite painless, the type system told me about the things I'd forgotten, and the semantics of FRP and how the ``Event``s and ``Dynamic``s fit together ensured that nothing untoward happened. Mostly...
 
@@ -228,6 +231,6 @@ The issue is that whilst ``tagPromptlyDyn d e`` resembles ``tag (current d) e``,
 
 Changing it back to use ``current d <@ e`` made everything happy. ``tagPromptlyDyn`` does have its uses, but in this case the functionality was incorrect for what I was trying to achieve.
 
-## Just keep swimming...
+#### Just keep swimming...
 
 The date picker is progressing well and it's nice to see people interested in it. Next goal is proper testing, for both the widget side of things, and the underlying FRP implementation. The compositional design and robustness of FRP is excellent and provides an immense amount of confidence. But it is not the full story and I would like to know how to write tests for a Reflex widget, and Reflex in general. Also, I **must** write some documentation.
