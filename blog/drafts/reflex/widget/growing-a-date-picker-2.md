@@ -62,9 +62,9 @@ mkDatePickerCore
 mkDatePickerCore = ...
 ```
 
-Each of these components can be used as a standalone piece. So if you have an existing way of specifying a list of ``Day`` values, you can use only the ``DaySelect`` component to handle the list and click ``Event``. If you have you're own display built, you can use the ``Core`` component to manage the state of the ``Day`` value. This provides a lot of flexibility, both in display since none of the components are tied together, but also in raw functionality with respect to how you handle the ``Day`` value.
+Each of these components can be used as a standalone piece. So if you have an existing way of specifying a list of ``Day`` values, you can use only the ``DaySelect`` component to handle the list and click ``Event``. If you have you're own display built, you can use the ``Core`` component to manage the state of the ``Day`` value. This provides a lot of flexibility, both in display since none of the components are tied together, but also in raw functionality with respect to how you handle the various ``Event``s and ``Dynamic``s.
 
-Naturally everyone will have their own requirements, but I'm quite interested to read the feedback regarding this sort of design. There is a simpler datepicker function included that just packages everything up into a single widget. Should you have no need to utilise the pieces individually. 
+Naturally everyone will have their own requirements, but I'm quite interested in the feedback regarding this sort of design. There is a simpler datepicker function included that just packages everything up into a single widget. Should you have no need to utilise the pieces individually. 
 
 There is also:
 - ``Reflex.Dom.Widget.Input.Datepicker.Style``: Contains some default ``Map Text Text`` implementations for element attributes, and ``Wrap a t m`` default implementations for the components that need them.
