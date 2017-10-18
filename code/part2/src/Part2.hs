@@ -3,6 +3,7 @@
 module Part2 (widg) where
 
 import           Control.Lens                             ((.~))
+import           Data.Semigroup                           ((<>))
 
 import           Util.Attach
 
@@ -12,8 +13,8 @@ import           Reflex.Dom                               (MonadWidget, (=:))
 import qualified Reflex.Dom                               as RD
 
 import qualified Reflex.Dom.Widget.Input.Datepicker       as D
-import qualified Reflex.Dom.Widget.Input.Datepicker.Types as D
 import qualified Reflex.Dom.Widget.Input.Datepicker.Style as D
+import qualified Reflex.Dom.Widget.Input.Datepicker.Types as D
 
 import           Data.Function                            ((&))
 
@@ -67,9 +68,22 @@ fullSimpleDatepickerWidget = RD.divClass "container" $ do
 
     cfg = D.simpleDateInputConfig aust
       & D.dateInputConfig_initialValue .~ Time.fromGregorian 2017 2 3
-      & D.dateInputConfig_textInputAttrs .~ pure ( "class" =: "form-control datepicker-text-input" )
-      & D.dateInputConfig_mthBtnAttrs .~ pure ( "class" =: "btn btn-default" )
-      & D.dateInputConfig_dayAttrs .~ pure ( "class" =: "label label-info" )
+
+      & D.dateInputConfig_textInputAttrs .~
+        pure ( "class" =: "form-control datepicker-text-input" )
+
+      & D.dateInputConfig_mthBtnAttrs .~
+        pure ( "class" =: "btn btn-default" )
+
+      & D.dateInputConfig_dayAttrs .~
+        pure (\selected ->
+                 "class" =: (
+                   -- Add the 'active' class when we're selected
+                   "label " <> if selected
+                               then "label-warning"
+                               else "label-info"
+                   )
+             )
 
   -- Place the simple date picker on the page. This is a "prebaked" widget that
   -- has a lot of the functionality built into a single component with some flexible styling.

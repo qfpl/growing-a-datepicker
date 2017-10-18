@@ -10,6 +10,7 @@
   margin: 0.1em;
   width: 13.28%;
 }
+
 /* Small devices (tablets, 768px and up) */
 @media (max-width: 768px) {
   .month-button-wrap {

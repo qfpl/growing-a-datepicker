@@ -5,8 +5,8 @@ let
     reflex-dom-datepicker = initialNixpkgs.pkgs.fetchFromGitHub {
       owner  = "qfpl";
       repo   = "reflex-dom-datepicker";
-      rev    = "7a2784047a2531f97b1d0585f14f9afc50647808";
-      sha256 = "1l1qkkh5b26a9f42rdhr69yx7136gb9ymv61jxb079yi1j5r2ky5";
+      rev    = "2a800bc6ca4abe2ca1d7365c7d64e62290468192";
+      sha256 = "10l9q6dhnwqlz4iffmw2i1fsd50ay2vrzhzqwg3v8rpjqfza79lx";
     };
   };
 
