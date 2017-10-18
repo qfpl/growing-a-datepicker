@@ -230,4 +230,4 @@ Changing it back to use ``current d <@ e`` made everything happy. ``tagPromptlyD
 
 ## Just keep swimming...
 
-The date picker is progressing well and it's nice to see people interested in it so I hope I can make something useful. Next up is more dynamic and flexible styling capabilities for the list of days. As well is cleaning up the code and providing more useful comments and documentation on how one might actually use it.
+The date picker is progressing well and it's nice to see people interested in it. Next goal is proper testing, for both the widget side of things, and the underlying FRP implementation. The compositional design and robustness of FRP is excellent and provides an immense amount of confidence. But it is not the full story and I would like to know how to write tests for a Reflex widget, and Reflex in general. Also, I **must** write some documentation.
