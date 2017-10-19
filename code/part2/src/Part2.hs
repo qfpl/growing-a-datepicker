@@ -79,9 +79,9 @@ fullSimpleDatepickerWidget = RD.divClass "container" $ do
         pure (\selected ->
                  "class" =: (
                    -- Add the 'active' class when we're selected
-                   "label " <> if selected
-                               then "label-warning"
-                               else "label-info"
+                   "day label " <> if selected
+                                        then "label-warning"
+                                        else "label-info"
                    )
              )
 

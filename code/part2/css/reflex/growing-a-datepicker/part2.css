@@ -6,6 +6,10 @@
   text-align: center;
 }
 
+.day {
+  cursor: pointer;
+}
+
 .day-wrap {
   margin: 0.1em;
   width: 13.28%;
