@@ -9,13 +9,13 @@ extra-js: /js/reflex/growing-a-datepicker/datepicker-embed.min.js
 
 Continuing on from the [previous post](posts/reflex/widget/growing-a-datepicker-1). A lot has changed and the various pieces are really starting to come together. In this post we discuss a large scale refactoring and some redesign to facilitate more flexible and useful styling.
 
-#### Behold, a datepicker
+### Behold, a datepicker
 
 The widget on the left is the simple date picker implementation as it currently stands. The CSS that is provided in the library itself is far simpler for portability reasons. Also because my skills with CSS are quite woeful, I do apologise.
 
 <div id="datepicker-simple"></div>
 
-#### Refactoring
+### Refactoring
 
 Spurred on by [this comment](https://www.reddit.com/r/haskell/comments/74mnnk/growing_a_date_picker_in_reflex_part_1/do3g6nx/), I started to factor out the larger pieces of the date picker into their own functions, and eventually their own modules. Initially this was to see if I could make the list of days a standalone item, but it soon snowballed...
 
@@ -62,18 +62,20 @@ mkDatePickerCore
 mkDatePickerCore = ...
 ```
 
-Each of these components can be used as a standalone piece. So if you have an existing way of specifying a list of ``Day`` values, you can use only the ``DaySelect`` component to handle the list and click ``Event``. If you have you're own display built, you can use the ``Core`` component to manage the state of the ``Day`` value. This provides a lot of flexibility, both in display since none of the components are tied together, but also in raw functionality with respect to how you handle the various ``Event``s and ``Dynamic``s.
+Each of these components can be used as a standalone piece. So if you have an existing way of specifying a list of ``Day`` values, you can use only the ``DaySelect`` component to manage the list and the click ``Event``. If you have your own display built, you can use the ``Core`` component to manage the state of the ``Day`` value. This provides a lot of flexibility, in display, since none of the components are bound together, but also in raw functionality with respect to how you integrate the various ``Event``s and ``Dynamic``s.
 
-Naturally everyone will have their own requirements, but I'm quite interested in the feedback regarding this sort of design. There is a simpler datepicker function included that just packages everything up into a single widget. Should you have no need to utilise the pieces individually. 
+Naturally everyone will have their own requirements, so I'm quite interested in the feedback regarding this sort of design and if it helps provide the desired level of flexibility.
+
+There is also a simpler datepicker function included that just packages everything up into a single widget. Should you have no need to utilise the pieces individually. 
 
 There is also:
-- ``Reflex.Dom.Widget.Input.Datepicker.Style``: Contains some default ``Map Text Text`` implementations for element attributes, and ``Wrap a t m`` default implementations for the components that need them.
-- ``Reflex.Dom.Widget.Input.Datepicker.Types``: Reasonably self-explanatory, but contains the core records that hold various sets of information, as well as some utility functions. As well as the ``Wrap a t m`` and the type level identifiers for the datepicker wrappers.
+- ``Reflex.Dom.Widget.Input.Datepicker.Style``: That contains some ``Map Text Text`` implementations for element attributes, and some ``Wrap a t m`` defaults.
+- ``Reflex.Dom.Widget.Input.Datepicker.Types``: Reasonably self-explanatory, it contains the core records that hold various sets of information, as well as some utility functions. As well as the ``Wrap a t m`` and the type level identifiers for the datepicker wrappers.
 - ``Reflex.Dom.Widget.Basic.SelectViews``: Contains some generalised 'list of widgets' type functions that are variations on functions provided in ``reflex-dom``.
 
-#### Paint and glitter
+### Paint and glitter
 
-The ability to dynamically style the ``Day`` that has been selected is a required feature. There quite a few ways of handling this and I went through quite a few iterations before settling on it is now. Even so, I'm sure there are better ways to do this, but this will suffice for now.
+The ability to dynamically style the ``Day`` that has been selected is a required feature. There are quite a few ways of handling this and I went through a few iterations before settling on what is there now. Even so, I'm sure there are better ways to do this.
 
 Initial thoughts involved changing the attributes ``Dynamic`` from:
 ```haskell
@@ -90,7 +92,7 @@ Map Text Text -> Day -> Day -> Map Text Text
 
 That would let you make adjustments to the default styling for the ``Day`` based on, for example, comparison to another ``Day`` value. So if the ``Day`` values match, in the case of trying to render the ``Day`` that has been clicked, you can adjust the styling to suit. The construction of that function would be left to the end user, with some default implementations provided for people that don't care to mess with it.
 
-This ended up being quite clumsy to use and gave the nagging feeling that there would be endless edge cases where this function was either not flexible enough, or there would always be redundant inputs. So I moved on...
+This ended up being quite clumsy to use, and gave the nagging feeling that there would be endless edge-cases where this function was either not flexible enough, or there would always be redundant inputs. So I moved on...
 
 After reading more into the existing functionality that is available in ``reflex-dom``, one function in particular stood out:
 ```haskell
@@ -113,7 +115,7 @@ _ :: Day -> Dynamic t (Bool -> Map Text Text) -> Dynamic t Bool -> m (Event t Da
 ```
 Allowing me to just use ``Applicative`` instance for ``Dynamic`` to combine the ``Dynamic t Bool`` and the ``Dynamic t (Bool -> Map Text Text)``:
 ```haskell
-dAttrs = dAttrFn <*> dSelected
+let dAttrs = dAttrFn <*> dSelected
 ```
 Creating the ``Dynamic t (Map Text Text)`` that is needed for the inner element.
 
@@ -157,13 +159,15 @@ I'm still not completely sure that this is the best signature for the ``Dynamic`
 
 The functions it builds on are in the [reflex-dom-datepicker](https://github.com/qfpl/reflex-dom-datepicker) repo, and if they're useful enough then they might end up in ``reflex-dom``. 
 
-#### Scope creep...
+### Scope creep...
 
 It would be nice to be able to select a range of days. Either by selecting a start and end individually, or clicking and dragging. That's a bit more advanced and I'm not sure how to approach it yet.
 
-#### Styling additions
+There is no functionality for hiding or showing the list of days in a pop-over, when the text input has focus. Which is a common DatePicker 'feature'. The ``DatePickerControls`` record does contain the ``TextInput`` record, which has a ``Dynamic t Bool`` for when the text input has focus, with access to all of the styling it should be reasonably mechanical to implement. It'd just be the positioning CSS that would be a pain, I expect.
 
-In order to make some of the styling possible for the various component layouts, I need to wrap groups of elements in a ``div`` or similar parent element. Whilst "make it work" was the priority, this was handled by hard-coding in the wrapping element. But that isn't a viable solution for end users as their needs will always be a bit different. It is easy to assume they'll be more capable than I am when it comes to CSS, so best not bind them to my attempts at a flexible layout.
+### Styling additions
+
+In order to make some of the styling possible for the various component layouts, I needed to wrap groups of elements in a ``div`` or similar parent element. Whilst "make it work" was the priority, this was handled by hard-coding in the wrapping element. But that isn't a viable solution for end users as their needs will always be a bit different. It is easy to assume they'll be more capable than I am when it comes to CSS, so best not bind them to my attempts at a flexible layout.
 
 To that end, I generalised the technique I had used in earlier stages by having a ``newtype`` that contained a wrapping function:
 ```haskell
@@ -171,7 +175,7 @@ newtype Wrap a t m = Wrap
   { wrapEl :: forall e. MonadWidget t m => m e -> m e
   }
 ```
-This type contains a [phantom type](https://wiki.haskell.org/Phantom_type) which requires you to provide extra type level information. In this case, the extra information is an identifier about the element you will be wrapping. As well as ensuring that the ``t`` and ``m`` line up with the rest of the Reflex application. It is constructed using a function that is the identity of the element that is passed in. But lets you wrap the inner element in something else.
+This type contains a [phantom type](https://wiki.haskell.org/Phantom_type) which requires you to provide extra type level information. In this case, the extra information is an identifier about the element you will be wrapping. As well as ensuring that the ``t`` and ``m`` line up with the rest of the Reflex application. It is constructed using a function that is the identity of the element that is passed in, whilst allowing you to wrap the inner element in something else.
 
 To use it, specify an empty type, so we have a type level identifier about what you're intending to use it for:
 ```haskell
@@ -210,7 +214,7 @@ There are possibly type level functions one could implement that would make that
 
 Additionally, there is a lot of work to be done to make a nicer, composible, and type safe method of defining and using attributes/CSS. But that is a huuuuuuuuge project.
 
-#### Oh no, a bug!
+### Oh no, a bug!
 
 Overall the process of breaking out the different pieces into their various modules was quite painless, the type system told me about the things I'd forgotten, and the semantics of FRP and how the ``Event``s and ``Dynamic``s fit together ensured that nothing untoward happened. Mostly...
 
@@ -223,6 +227,7 @@ This creates an ``Event`` that contains a value of the previous month, based on 
 This is a common enough expression in Reflex, however I wondered if there was a simpler way to express this. What I found was:
 ```haskell
 tagPromptlyDyn :: Dynamic a -> Event b -> Event a
+
 -- Vs the 'tag' operator and 'current'
 current :: Dynamic a -> Behavior a
 (<@) :: Behavior a -> Event b -> Event a
@@ -231,12 +236,12 @@ So my expression became:
 ```haskell
 let ePreviousMonth = prevMonth <$> tagPromptlyDyn dDayValue ePrevMonthClicked
 ```
-Saved the file, compiled the code, reloaded the page, and nothing worked. Damn...
+Saved the file, compiled the code, reloaded the page, and nothing worked. Bugger...
 
 The issue is that whilst ``tagPromptlyDyn d e`` resembles ``tag (current d) e``, it has different functionality with respect to acquiring the value of ``d``. Explained in detail [here](https://github.com/reflex-frp/reflex/blob/fe21a501f7db4a3dbf5f7727c37bbe33fafee9ac/src/Reflex/Dynamic.hs#L242). I had created the exact scenario that the comment is referring to. As this particular ``Event`` is used to update the value of the ``Dynamic`` that I am using the ``current`` value of, in order to compute the new value. This creates a dependency cycle, thus the widget did not function.
 
 Changing it back to use ``current d <@ e`` made everything happy. ``tagPromptlyDyn`` does have its uses, but in this case the functionality was incorrect for what I was trying to achieve.
 
-#### Just keep swimming...
+### Just keep swimming...
 
 The date picker is progressing well and it's nice to see people interested in it. Next goal is proper testing, for both the widget side of things, and the underlying FRP implementation. The compositional design and robustness of FRP is excellent and provides an immense amount of confidence. But it is not the full story and I would like to know how to write tests for a Reflex widget, and Reflex in general. Also, I **must** write some documentation.
