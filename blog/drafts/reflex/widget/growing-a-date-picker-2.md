@@ -66,7 +66,7 @@ Each of these components can be used as a standalone piece. So if you have an ex
 
 Naturally everyone will have their own requirements, so I'm quite interested in the feedback regarding this sort of design and if it helps provide the desired level of flexibility.
 
-There is also a simpler datepicker function included that just packages everything up into a single widget. Should you have no need to utilise the pieces individually. 
+There is also a simpler datepicker function included that packages everything up into a single widget. Should you have no need to utilise the pieces individually. 
 
 There is also:
 
@@ -116,7 +116,7 @@ Because that would have given:
 ```haskell
 _ :: Day -> Dynamic t (Bool -> Map Text Text) -> Dynamic t Bool -> m (Event t Day)
 ```
-Allowing me to just use ``Applicative`` instance for ``Dynamic`` to combine the ``Dynamic t Bool`` and the ``Dynamic t (Bool -> Map Text Text)``:
+Allowing me to use the ``Applicative`` instance for ``Dynamic`` to combine the ``Dynamic t Bool`` and the ``Dynamic t (Bool -> Map Text Text)``:
 ```haskell
 let dAttrs = dAttrFn <*> dSelected
 ```
@@ -166,7 +166,7 @@ The functions it builds on are in the [reflex-dom-datepicker](https://github.com
 
 It would be nice to be able to select a range of days. Either by selecting a start and end individually, or clicking and dragging. That's a bit more advanced and I'm not sure how to approach it yet.
 
-There is no functionality for hiding or showing the list of days in a pop-over, when the text input has focus. Which is a common DatePicker 'feature'. The ``DatePickerControls`` record does contain the ``TextInput`` record, which has a ``Dynamic t Bool`` for when the text input has focus, with access to all of the styling it should be reasonably mechanical to implement. It'd just be the positioning CSS that would be a pain, I expect.
+There is no functionality for hiding or showing the list of days in a pop-over, when the text input has focus. Which is a common DatePicker 'feature'. The ``DatePickerControls`` record does contain the ``TextInput`` record, which has a ``Dynamic t Bool`` for when the text input has focus, with access to all of the styling it should be reasonably mechanical to implement. It'd be the positioning CSS that would be a pain, I expect.
 
 ### Styling additions
 
@@ -186,7 +186,7 @@ data ControlWrap
 ```
 This is a void type as there are no constructors, it's a type level restriction to ensure we don't try to wrap things with the wrong wrapper.
 
-For our example we'll just use a ``div`` with a class of our choosing:
+For our example we'll use a ``div`` with a class of our choosing:
 ```haskell
 import Reflex.Dom (MonadWidget, divClass)
 
@@ -211,7 +211,7 @@ mkDatePickerControls :: MonadWidget t m => ... -> Wrap ControlWrap t m -> ...
 ```
 Allowing the type system to help you use the correct wrapper.
 
-This is something that is just used in this project, and it's trivial enough that you can make your own should you feel so inclined. But there are possibilities for creating higher order functions with this style that would allow for safer definitions of frameworks like [Bootstrap](https://getbootstrap.com/). Stating clearly in the type that a function named ``cFluid`` has a type of ``:: Wrap ContainerFluid t m`` and you don't have to rely on the name only to use the right wrapper in the right spot.
+This is something that is used in this project, and it's trivial enough that you can make your own should you feel so inclined. But there are possibilities for creating higher order functions with this style that would allow for safer definitions of frameworks like [Bootstrap](https://getbootstrap.com/). Stating clearly in the type that a function named ``cFluid`` has a type of ``:: Wrap ContainerFluid t m`` and you don't have to rely on the name only to use the right wrapper in the right spot.
 
 There are possibly type level functions one could implement that would make that even nicer, but that is beyond the scope of this post.
 
