@@ -170,7 +170,7 @@ There is no functionality for hiding or showing the list of days in a pop-over, 
 
 ### Styling additions
 
-In order to make some of the styling possible for the various component layouts, I needed to wrap groups of elements in a ``div`` or similar parent element. Whilst "make it work" was the priority, this was handled by hard-coding in the wrapping element. But that isn't a viable solution for end users as their needs will always be a bit different. It is easy to assume they'll be more capable than I am when it comes to CSS, so best not bind them to my attempts at a flexible layout.
+In order to make some of the styling possible for the various component layouts, I needed to wrap groups of elements in a ``div`` or similar parent element. Whilst "make it work" was the priority, this was handled by hard-coding the wrapping element. But that isn't a viable solution for end users as their needs will always be a bit different. It is easy to assume they'll be more capable than I am when it comes to CSS, so best not bind them to my attempts at a flexible layout.
 
 To that end, I generalised the technique I had used in earlier stages by having a ``newtype`` that contained a wrapping function:
 ```haskell
@@ -221,7 +221,7 @@ Additionally, there is a lot of work to be done to make a nicer, composible, and
 
 Overall the process of breaking out the different pieces into their various modules was quite painless, the type system told me about the things I'd forgotten, and the semantics of FRP and how the ``Event``s and ``Dynamic``s fit together ensured that nothing untoward happened. Mostly...
 
-One issue I encountered, and it was entirely my fault, was wanting to find a cleaner way to express the construction of an ``Event t Day`` from the ``Dynamic t Day`` and ``Event t ()``. What I had was:
+During my search for a cleaner way to express the construction of an ``Event t Day`` from the ``Dynamic t Day`` and ``Event t ()``, I completely broke my widget... What I had was:
 ```haskell
 let ePreviousMonth = prevMonth <$> current dDayValue <@ ePrevMonthClicked
 ```
@@ -231,7 +231,7 @@ This is a common enough expression in Reflex, however I wondered if there was a 
 ```haskell
 tagPromptlyDyn :: Dynamic a -> Event b -> Event a
 
--- Vs the 'tag' operator and 'current'
+-- compared to the '<@' operator, aka tag, and 'current'
 current :: Dynamic a -> Behavior a
 (<@) :: Behavior a -> Event b -> Event a
 ```
@@ -247,4 +247,4 @@ Changing it back to use ``current d <@ e`` made everything happy. ``tagPromptlyD
 
 ### Just keep swimming...
 
-The date picker is progressing well and it's nice to see people interested in it. Next goal is proper testing, for both the widget side of things, and the underlying FRP implementation. The compositional design and robustness of FRP is excellent and provides an immense amount of confidence. But it is not the full story and I would like to know how to write tests for a Reflex widget, and Reflex in general. Also, I **must** write some documentation.
+The date picker is progressing well and it's nice to see people interested in it. Next goal is proper testing, for both the widget side of things, and the underlying FRP implementation. The compositional design and robustness of FRP is excellent and provides an immense amount of confidence. But it is not the full story and I would like to know how to write tests for a Reflex widget, and Reflex in general. Also, I **must** write some documentation about how to use this widget.
