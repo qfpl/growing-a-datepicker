@@ -69,8 +69,11 @@ Naturally everyone will have their own requirements, so I'm quite interested in 
 There is also a simpler datepicker function included that just packages everything up into a single widget. Should you have no need to utilise the pieces individually. 
 
 There is also:
+
 - ``Reflex.Dom.Widget.Input.Datepicker.Style``: That contains some ``Map Text Text`` implementations for element attributes, and some ``Wrap a t m`` defaults.
+
 - ``Reflex.Dom.Widget.Input.Datepicker.Types``: Reasonably self-explanatory, it contains the core records that hold various sets of information, as well as some utility functions. As well as the ``Wrap a t m`` and the type level identifiers for the datepicker wrappers.
+
 - ``Reflex.Dom.Widget.Basic.SelectViews``: Contains some generalised 'list of widgets' type functions that are variations on functions provided in ``reflex-dom``.
 
 ### Paint and glitter
