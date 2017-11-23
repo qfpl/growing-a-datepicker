@@ -7,7 +7,7 @@ extra-css: /css/reflex/growing-a-datepicker/reflex-dom-datepicker.css, /css/refl
 extra-js: /js/reflex/growing-a-datepicker/datepicker-embed.min.js
 ---
 
-Continuing on from the [previous post](../growing-a-date-picker-1). A lot has changed and the various pieces are really starting to come together. In this post we discuss a large scale refactoring and some redesign to facilitate more flexible and useful styling.
+Continuing on from the [previous post](../growing-a-date-picker-1/). A lot has changed and the various pieces are really starting to come together. In this post we discuss a large scale refactoring and some redesign to facilitate more flexible and useful styling.
 
 ### Behold, a datepicker
 
