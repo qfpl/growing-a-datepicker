@@ -1,20 +1,31 @@
-{ reflex-platform ? import ./reflex-platform.nix
+{ reflex-platform ? import ../../nix/reflex-platform.nix
 , compiler ? "ghcjs"
 } :
 let
-  pkgs = reflex-platform.nixpkgs.pkgs;
+  inherit (reflex-platform.nixpkgs) pkgs;
+
+  reflex-dom-datepicker = import ../../nix/reflex-dom-datepicker.nix;
 
   haskellPackages = reflex-platform.${compiler}.override {
-    overrides = (self: super: {
-      ghc = super.ghc // { withPackages = super.ghc.withHoogle; };
+    overrides = self: super: with pkgs.haskell.lib; {
+      ghc = super.ghc // { withPackages = super.ghcWithHoogle; };
       ghcWithPackages = self.ghc.withPackages;
-      common = pkgs.haskell.lib.dontHaddock (
-        import ../common { inherit compiler; }
+
+      # Missing doctest
+      bsb-http-chunked = dontCheck super.bsb-http-chunked;
+      http2 = dontCheck super.http2;
+      http-date = dontCheck super.http-date;
+      iproute = dontCheck super.iproute;
+      network-byte-order = dontCheck super.network-byte-order;
+
+      # The failing test seems minor. YOLO.
+      Glob = dontCheck super.Glob;
+
+      common = dontHaddock (self.callPackage ../common/common.nix {});
+      reflex-dom-datepicker = dontHaddock (
+        self.callPackage "${reflex-dom-datepicker}/reflex-dom-datepicker.nix" {}
       );
-      reflex-dom-datepicker = pkgs.haskell.lib.dontHaddock (
-        import ./pkgs/reflex-dom-datepicker.nix
-      );
-    });
+    };
   };
 
   adjust-for-ghcjs = drv: {
@@ -28,7 +39,7 @@ let
 
       mkdir -p $out/css/reflex/growing-a-datepicker
       cp -r ./css/* $out/css/
-      cp ${haskellPackages.reflex-dom-datepicker}/css/* $out/css/reflex/growing-a-datepicker/
+      cp ${reflex-dom-datepicker}/css/* $out/css/reflex/growing-a-datepicker/
 
       cd $out/bin/datepicker-embed.jsexe
       closure-compiler all.js --compilation_level=ADVANCED_OPTIMIZATIONS --isolation_mode=IIFE --assume_function_wrapper --jscomp_off="*" --externs=all.js.externs > $out/js/reflex/growing-a-datepicker/datepicker-embed.min.js

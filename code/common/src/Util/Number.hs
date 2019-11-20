@@ -11,8 +11,6 @@ import Control.Lens
 import Reflex
 import Reflex.Dom.Core
 
-import qualified Util.Bootstrap as B
-
 data NumberInputConfig t
    = NumberInputConfig { _numberInputConfig_initialValue :: Int
                        , _numberInputConfig_setValue :: Event t Int
