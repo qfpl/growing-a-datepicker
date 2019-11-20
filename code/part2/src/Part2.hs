@@ -1,3 +1,4 @@
+{-# LANGUAGE MonoLocalBinds        #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 module Part2 (widg) where
@@ -36,25 +37,25 @@ aust = Time.defaultTimeLocale
   }
 
 wrapDatePicker
-  :: MonadWidget t m => D.Wrap D.DatePickerW t m
+  :: () => D.Wrap D.DatePickerW t m
 wrapDatePicker = D.Wrap $
   RD.divClass "container-fluid"
   . RD.divClass "row"
     . RD.divClass "col-xs-12"
 
 wrapControls
-  :: MonadWidget t m => D.Wrap D.ControlW t m
+  :: () => D.Wrap D.ControlW t m
 wrapControls = D.Wrap $
   RD.divClass "form-inline text-center"
 
 wrapDayList
-  :: MonadWidget t m => D.Wrap D.DayListW t m
+  :: () => D.Wrap D.DayListW t m
 wrapDayList = D.Wrap $
   RD.divClass "panel panel-default text-center"
   . RD.divClass "panel-body"
 
 wrapMonthButton
-  :: MonadWidget t m => D.Wrap D.MonthBtnW t m
+  :: () => D.Wrap D.MonthBtnW t m
 wrapMonthButton = D.Wrap $
   RD.divClass "form-group month-button-wrap"
 

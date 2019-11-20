@@ -13,14 +13,14 @@ import Reflex.Dom.Core hiding (button)
 import qualified Util.Reflex as R
 
 button ::
-  MonadWidget t m =>
+  DomBuilder t m =>
   Text ->
   m (Event t ())
 button =
   R.buttonClass "btn btn-default"
 
 buttonClass ::
-  MonadWidget t m =>
+  DomBuilder t m =>
   Text ->
   Text ->
   m (Event t ())
@@ -28,7 +28,7 @@ buttonClass cl =
   R.buttonClass ("btn btn-default " <> cl)
 
 panel ::
-  MonadWidget t m =>
+  DomBuilder t m =>
   m a ->
   m a
 panel =

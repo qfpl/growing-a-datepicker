@@ -53,7 +53,7 @@ serveCss cssPath w = do
       mainWidgetWithHead
         (traverse_ (\f -> stylesheet . Text.pack $ cssPath </> f) cssFiles)
         w
-    backendApp  = 
+    backendApp  =
       staticPolicy $ hasPrefix cssPath
   pure (backendApp jsaddleApp, frontendApp)
 
@@ -86,9 +86,9 @@ run1' cssPath port w =
       serveFiles = staticPolicy $ hasPrefix cssPath
 
     debugWrapper $ \refreshMiddleware registerContext -> do
-      app <- jsaddleOr 
-               defaultConnectionOptions 
-               (registerContext >> f >> syncPoint) 
+      app <- jsaddleOr
+               defaultConnectionOptions
+               (registerContext >> f >> syncPoint)
                (refreshMiddleware jsaddleApp)
       runSettings (setPort port (setTimeout 3600 defaultSettings)) $
         serveFiles app
@@ -98,4 +98,3 @@ run ::
   -> IO ()
 run =
   run2' "css" 8080
-

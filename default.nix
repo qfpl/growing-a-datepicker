@@ -1,6 +1,8 @@
+{ nixpkgs ? import ./nix/nixpkgs.nix }:
 let
-  pkgs = import <nixpkgs> {};
-  blog = import ./blog {};
+  inherit (nixpkgs) pkgs;
+
+  blog = import ./blog { inherit nixpkgs; };
   part2 = import ./code/part2 {};
 in
   pkgs.stdenv.mkDerivation rec {
