@@ -18,6 +18,9 @@ let
       iproute = dontCheck super.iproute;
       network-byte-order = dontCheck super.network-byte-order;
 
+      # Test uses all memory then explodes.
+      SHA = dontCheck super.SHA;
+
       # The failing test seems minor. YOLO.
       Glob = dontCheck super.Glob;
 
